@@ -10,6 +10,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+import numpy as np
 
 with open('en_ewt-ud-test.conllu', encoding='utf-8') as fp:
   data = [sent for sent in conllu.parse_incr(fp)]
@@ -88,7 +89,7 @@ embedded_arc_labels_list = []
 for word in distinct_words:
     
     lookup_tensor = torch.tensor([distinct_words_dict[word]], dtype=torch.long)
-    #print(lookup_tensor)
+    # print(lookup_tensor)
     embedded_word_list.append(embedding_words(lookup_tensor))
     
 print(embedded_word_list)
@@ -96,10 +97,26 @@ print(embedded_word_list)
 for tags in distinct_tags:
     lookup_tensor = torch.tensor([distinct_tags_dict[tags]], dtype=torch.long)
     embedded_tags_list.append(embedding_tags(lookup_tensor))
-#print(embedded_tags_list)
+# print(embedded_tags_list)
 
-for arc_labels in distinct_tags:
-    lookup_tensor = torch.tensor([distinct_tags_dict[arc_labels]], dtype=torch.long)
+for arc_labels in distinct_arc_labels:
+    lookup_tensor = torch.tensor([distinct_arc_labels_dict[arc_labels]], dtype=torch.long)
     embedded_arc_labels_list.append(embedding_arc_labels(lookup_tensor))
-#print(embedded_arc_labels_list)
+# print(embedded_arc_labels_list)
 
+
+
+# creating the dataset
+def word_to_embedding(string):
+    
+    return embedding_words(torch.tensor(distinct_words_dict[string], dtype = torch.long))
+    
+print(word_to_embedding("the"))
+
+def upos_to_embedding(string):
+    
+    return embedding_tags(distinct_tags_dict[string], dtype=torch.long)
+
+def arc_labels_to_embedding(string):
+    
+    return embedding_arc_labels(distinct_arc_labels_dict[string], dtype=torch.long)
