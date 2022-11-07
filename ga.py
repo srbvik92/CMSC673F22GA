@@ -120,3 +120,17 @@ def upos_to_embedding(string):
 def arc_labels_to_embedding(string):
     
     return embedding_arc_labels(distinct_arc_labels_dict[string], dtype=torch.long)
+
+
+#generating trainig instance
+# function for greedy parser
+def greedy_parser(sentence):
+    stack = []
+    depend_rel = [] 
+    buffer = []
+    
+    for word in sentences:
+        
+        for tokens in word:
+            
+            print(tokens)
